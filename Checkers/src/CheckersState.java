@@ -1,7 +1,7 @@
 
 public class CheckersState {
 
-	int[] board = new int[36];
+	int[] board = new int[36];		//something
 	boolean myColorIsBlack;
 	final int INVALID = 100;
 	
