@@ -6,4 +6,5 @@ public class Checkers {
 		CheckersState myState = new CheckersState(true);
 		myState.printBoard();
 	}
+
 }

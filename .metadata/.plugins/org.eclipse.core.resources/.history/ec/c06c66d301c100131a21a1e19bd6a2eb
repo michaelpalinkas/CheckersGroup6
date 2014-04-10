@@ -4,6 +4,9 @@ public class Checkers {
 	public static void main(String[] args) {
 		
 		CheckersState myState = new CheckersState(true);
-		myState.printBoard();
+		//myState.printBoard();
+		for (int i = 0; i < myState.board.length; i++) {
+			System.out.println(myState.board[i]);
+		}
 	}
 }

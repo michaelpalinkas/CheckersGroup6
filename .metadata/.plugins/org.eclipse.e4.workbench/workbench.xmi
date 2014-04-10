@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ASCII"?>
 <application:Application xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:advanced="http://www.eclipse.org/ui/2010/UIModel/application/ui/advanced" xmlns:application="http://www.eclipse.org/ui/2010/UIModel/application" xmlns:basic="http://www.eclipse.org/ui/2010/UIModel/application/ui/basic" xmlns:menu="http://www.eclipse.org/ui/2010/UIModel/application/ui/menu" xmi:id="_Qn4_UcBVEeO7iJ6ZmXkNAA" elementId="org.eclipse.e4.legacy.ide.application" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_Qn5mYMBVEeO7iJ6ZmXkNAA" bindingContexts="_Qn5macBVEeO7iJ6ZmXkNAA">
   <tags>activeSchemeId:org.eclipse.ui.defaultAcceleratorConfiguration</tags>
-  <children xsi:type="basic:TrimmedWindow" xmi:id="_Qn5mYMBVEeO7iJ6ZmXkNAA" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_RPl4gMBVEeO7iJ6ZmXkNAA" x="50" y="50" width="1024" height="768">
+  <children xsi:type="basic:TrimmedWindow" xmi:id="_Qn5mYMBVEeO7iJ6ZmXkNAA" elementId="IDEWindow" contributorURI="platform:/plugin/org.eclipse.ui.workbench" selectedElement="_RPl4gMBVEeO7iJ6ZmXkNAA" x="0" y="0" width="1024" height="768">
     <tags>topLevel</tags>
     <tags>shellMaximized</tags>
     <children xsi:type="basic:PartSashContainer" xmi:id="_RPl4gMBVEeO7iJ6ZmXkNAA" selectedElement="_RPmfkMBVEeO7iJ6ZmXkNAA" horizontal="true">
