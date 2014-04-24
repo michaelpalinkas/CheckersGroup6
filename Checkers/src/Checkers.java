@@ -81,6 +81,7 @@ public class Checkers {
 				for (int i = 0; i < potentialMoves.size(); i++) {
 					System.out.print(potentialMoves.get(i));
 				}
+				System.out.println();
 				move = mms.minimaxDecision(myState, maximizing);
 				System.out.print("\nMove chosen:\n" + move);
 				bw.write(move);

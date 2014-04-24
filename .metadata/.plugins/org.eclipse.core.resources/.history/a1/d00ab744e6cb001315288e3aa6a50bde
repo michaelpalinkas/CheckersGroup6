@@ -30,7 +30,7 @@ public class MinimaxSearch {
 			for (String s : state.actions()) {
 				
 				v = maxValue(state.result(s), 0);
-				System.out.print(s);
+				System.out.println(s);
 				System.out.println("v: " + v);
 				if (v < vBest) {
 					vBest = v;

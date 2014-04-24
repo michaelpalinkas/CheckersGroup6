@@ -5,5 +5,5 @@ public interface GameState {
 	List<String> actions();
 	GameState result(String action);
 	boolean isTerminal();
-	double utility(String player);  
+	double utility(String player);  // should only need to work for terminal game states
 }

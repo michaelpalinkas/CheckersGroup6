@@ -1,6 +1,6 @@
 public class MinimaxSearch {
 	
-	private final int MAXDEPTH = 5;
+	private final int MAXDEPTH = 2;
 	
 	public String minimaxDecision(GameState state, boolean minOrMax){
 
@@ -12,8 +12,8 @@ public class MinimaxSearch {
 			for (String s : state.actions()) {
 				
 				v = minValue(state.result(s), 0);
-				System.out.println(s);
-				System.out.println("v: " + v);
+				//System.out.println(s);
+				//System.out.println("v: " + v);
 				if (v > vBest) {
 					vBest = v;
 					bestAction = s;
@@ -30,8 +30,8 @@ public class MinimaxSearch {
 			for (String s : state.actions()) {
 				
 				v = maxValue(state.result(s), 0);
-				System.out.print(s);
-				System.out.println("v: " + v);
+				//System.out.println(s);
+				//System.out.println("v: " + v);
 				if (v < vBest) {
 					vBest = v;
 					bestAction = s;
