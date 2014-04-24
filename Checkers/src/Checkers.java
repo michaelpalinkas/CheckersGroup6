@@ -58,20 +58,36 @@ public class Checkers {
 				myState = new CheckersState(false);
 				message = br.readLine();
 				System.out.println(message);
-				//myState.result(message);
-				//myState.printBoard();
+				myState.result(message, true);
+				myState.printBoard();
 			}
 			else {
 				myState = new CheckersState(true);
-				message = br.readLine();
-				System.out.println(message);
 			}
-			//myState.printBoard();
 			
 			
-			message = br.readLine();
-			System.out.println(message);
+			boolean inGame = true;
+			String move;
+			while (inGame) {
+				message = br.readLine();
+				System.out.println(message);	//?Move(time)
+				if (message.contains("Result") || message.contains("Error")) break;
+				move = myState.actions().get(0);
+				System.out.print("\nMove chosen:\n" + move);
+				bw.write(move);
+				bw.flush();
+				myState.result(move, false);
+				myState.printBoard();
+				
+				message = br.readLine();	//Move:ourmove
+				System.out.println(message);
+				message = br.readLine();	//Move:theirmove
+				System.out.println(message);
 
+				if (message.contains("Result") || message.contains("Error")) break;
+				myState.result(message, true);
+				myState.printBoard();
+			}
 			
 			mySocket.close();
 		}

@@ -1,0 +1,12 @@
+{
+  "C:\\Users\\Mike\\Documents\\School Stuff\\AI\\CheckersGroup6\\CheckersGroup6\\Checkers\\src": {
+    "location": "C:\\Users\\Mike\\Documents\\School Stuff\\AI\\CheckersGroup6\\CheckersGroup6\\Checkers\\src",
+    "status": "UNRESOLVED",
+    "error": "No class path info available for \u0027C:\\Users\\Mike\\Documents\\School Stuff\\AI\\CheckersGroup6\\CheckersGroup6\\Checkers\\src\u0027. Skipped."
+  },
+  "C:\\Program Files\\Java\\jre7\\lib\\rt.jar": {
+    "coordinate": "jre:jre:zip:call:1.0.0",
+    "location": "C:\\Program Files\\Java\\jre7\\lib\\rt.jar",
+    "status": "RESOLVED"
+  }
+}
