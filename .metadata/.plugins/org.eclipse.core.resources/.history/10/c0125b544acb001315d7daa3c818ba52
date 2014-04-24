@@ -1,0 +1,79 @@
+public class MinimaxSearch {
+	
+	public String minimaxDecision(GameState state, boolean minOrMax){
+
+		//the boolean is added in order to play the games, and is used to indicate which players turn it is
+		//if it is player one's turn, it needs to choose that action that is the maximum of the minimum values returned 
+		//by iterating through the entire game
+		//likewise if it is player two's turn, it need to choose the action that is the minimum of the maximum values returned
+		//by iterating through the entire game
+		//the majority of this class is implementation of pseudo code in the book
+		
+		if (minOrMax) { //maximizing
+			double vBest = -100;
+			double v;
+			String bestAction = "";
+			
+			for (String s : state.actions()) {
+				
+				v = minValue(state.result(s));
+				System.out.println(s);
+				System.out.println("v: " + v);
+				if (v > vBest) {
+					vBest = v;
+					bestAction = s;
+				}
+			}
+			
+			return bestAction;
+		}
+		else {	//minimizing
+			double vBest = 100;
+			double v;
+			String bestAction = "";
+			
+			for (String s : state.actions()) {
+				
+				v = maxValue(state.result(s));
+				System.out.println(s);
+				System.out.println("v: " + v);
+				if (v < vBest) {
+					vBest = v;
+					bestAction = s;
+				}
+			}
+			
+			return bestAction;
+		}		
+	}
+	
+	public double minValue(GameState state){
+
+		if (state.isTerminal())
+			return state.utility(state.player());
+		
+		double v = 100;
+		
+		for (String s : state.actions()) {
+			
+			v = Math.min(v, maxValue(state.result(s)));
+		}
+		
+		return v;
+	}
+	
+	public double maxValue(GameState state){
+
+		if (state.isTerminal())
+			return state.utility(state.player());
+		
+		double v = -100;
+		
+		for (String s : state.actions()) {
+			
+			v = Math.max(v, minValue(state.result(s)));
+		}
+			
+		return v;
+	}
+}

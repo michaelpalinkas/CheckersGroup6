@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class CheckersState {
+public class CheckersState implements GameState {
 
 	int[] board = new int[36];
 	boolean myColorIsBlack;
@@ -29,6 +29,13 @@ public class CheckersState {
 		}
 	}
 
+	public String player() {
+		if (myColorIsBlack) 
+			return "Black";
+		else 
+			return "White";
+	}
+	
 	public String addJumps(int index, boolean isBlack) {
 		
 		String toReturn = "";
@@ -48,6 +55,68 @@ public class CheckersState {
 			toReturn += ":(" + getRow(index+8) + ":" + getCol(index+8) + ")";
 			toReturn += addJumps(index+8, isBlack);
 		}
+		return toReturn;
+	}
+	
+	public String addKingJumps(int index, boolean isBlack) {
+		
+		String toReturn = "";
+		String temp;
+		if (isBlack) {
+			if (index-10 >= 0 && board[index-10] == 0 && (board[index-5] == -1 || board[index-5] == -2)) {
+				toReturn += ":(" + getRow(index-10) + ":" + getCol(index-10) + ")";
+				temp = addKingJumps(index-10, isBlack);
+				if (!toReturn.contains(temp))
+					toReturn += temp;
+			}
+			else if (index-8 >= 0 && board[index-8] == 0 && (board[index-4] == -1 || board[index-4] == -2)) {
+				toReturn += ":(" + getRow(index-8) + ":" + getCol(index-8) + ")";
+				temp = addKingJumps(index-8, isBlack);
+				if (!toReturn.contains(temp))
+					toReturn += temp;
+			}
+			else if(index+10 < board.length && board[index+10] == 0 && (board[index+5] == -1 || board[index+5] == -2)) {
+				toReturn += ":(" + getRow(index+10) + ":" + getCol(index+10) + ")";
+				temp = addKingJumps(index+10, isBlack);
+				if (!toReturn.contains(temp))
+					toReturn += temp;
+			}
+			else if (index+8 < board.length && board[index+8] == 0 && (board[index+4] == -1 || board[index+4] == -2)) {
+				toReturn += ":(" + getRow(index+8) + ":" + getCol(index+8) + ")";
+				temp = addKingJumps(index+8, isBlack);
+				if (!toReturn.contains(temp))
+					toReturn += temp;
+			}
+		}
+		else {
+			if (index-10 >= 0 && board[index-10] == 0 && (board[index-5] == 1 || board[index-5] == 2)) {
+				toReturn += ":(" + getRow(index-10) + ":" + getCol(index-10) + ")";
+				System.out.println(toReturn);
+				temp = addKingJumps(index-10, isBlack);
+				if (!toReturn.contains(temp))
+					toReturn += temp;
+			}
+			else if (index-8 >= 0 && board[index-8] == 0 && (board[index-4] == 1 || board[index-4] == 2)) {
+				toReturn += ":(" + getRow(index-8) + ":" + getCol(index-8) + ")";
+				temp = addKingJumps(index-8, isBlack);
+				if (!toReturn.contains(temp))
+					toReturn += temp;
+			}
+			else if(index+10 < board.length && board[index+10] == 0 && (board[index+5] == 1 || board[index+5] == 2)) {
+				toReturn += ":(" + getRow(index+10) + ":" + getCol(index+10) + ")";
+				System.out.println(toReturn);
+				temp = addKingJumps(index+10, isBlack);
+				if (!toReturn.contains(temp))
+					toReturn += temp;
+			}
+			else if (index+8 < board.length && board[index+8] == 0 && (board[index+4] == 1 || board[index+4] == 2)) {
+				toReturn += ":(" + getRow(index+8) + ":" + getCol(index+8) + ")";
+				temp = addKingJumps(index+8, isBlack);
+				if (!toReturn.contains(temp))
+					toReturn += temp;
+			}
+		}
+		
 		return toReturn;
 	}
 		
@@ -99,7 +168,7 @@ public class CheckersState {
 					possibleMoves.add(temp);
 				}
 			}
-			else if ((board[i] == -2 && !myColorIsBlack) || (board[i] == 2 && myColorIsBlack)) { //king
+			else if (board[i] == -2 && !myColorIsBlack) { //white king
 				
 				if (inBounds(i+4) && board[i+4] == 0) {
 					possibleMoves.add("(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+4) + ":" + getCol(i+4) + ")\n");
@@ -113,37 +182,76 @@ public class CheckersState {
 				if (inBounds(i-5) && board[i-5] == 0) {
 					possibleMoves.add("(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i-5) + ":" + getCol(i-5) + ")\n");
 				}
-				if (inBounds(i+10) && board[i+10] == 0 && (board[i+5] != board[i] && board[i+5] != 0 && board[i+5] != INVALID)) { //capture
+				if (inBounds(i+10) && board[i+10] == 0 && (board[i+5] == 1 || board[i+5] == 2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+10) + ":" + getCol(i+10) + ")";
-					temp += addJumps(i+10, true);
+					temp += addKingJumps(i+10, false);
 					temp += "\n";
 					possibleMoves.add(temp);
 				}
-				if (inBounds(i+8) && board[i+8] == 0 && (board[i+4] != board[i] && board[i+4] != 0 && board[i+4] != INVALID)) { //capture
+				if (inBounds(i+8) && board[i+8] == 0 && (board[i+4] == 1 || board[i+4] == 2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+8) + ":" + getCol(i+8) + ")";
-					temp += addJumps(i+8, true);
+					temp += addKingJumps(i+8, false);
 					temp += "\n";
 					possibleMoves.add(temp);
 				}
-				if (inBounds(i-10) && board[i-10] == 0 && (board[i-5] != board[i] && board[i-5] != 0 && board[i-5] != INVALID)) { //capture
+				if (inBounds(i-10) && board[i-10] == 0 && (board[i-5] == 1 || board[i-5] == 2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i-10) + ":" + getCol(i-10) + ")";
-					temp += addJumps(i-10, false);
+					temp += addKingJumps(i-10, false);
 					temp += "\n";
 					possibleMoves.add(temp);					
 				}
-				if (inBounds(i-8) && board[i-8] == 0 && (board[i-4] != board[i] && board[i-4] != 0 && board[i-4] != INVALID)) { //capture
+				if (inBounds(i-8) && board[i-8] == 0 && (board[i-4] == 1 || board[i-4] == 2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i-8) + ":" + getCol(i-8) + ")";
-					temp += addJumps(i-8, false);
+					temp += addKingJumps(i-8, false);
+					temp += "\n";
+					possibleMoves.add(temp);
+				}
+			}
+			else if (board[i] == 2 && myColorIsBlack) { //black king
+				
+				if (inBounds(i+4) && board[i+4] == 0) {
+					possibleMoves.add("(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+4) + ":" + getCol(i+4) + ")\n");
+				}
+				if (inBounds(i+5) && board[i+5] == 0) {
+					possibleMoves.add("(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+5) + ":" + getCol(i+5) + ")\n");
+				}
+				if (inBounds(i-4) && board[i-4] == 0) {
+					possibleMoves.add("(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i-4) + ":" + getCol(i-4) + ")\n");
+				}
+				if (inBounds(i-5) && board[i-5] == 0) {
+					possibleMoves.add("(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i-5) + ":" + getCol(i-5) + ")\n");
+				}
+				if (inBounds(i+10) && board[i+10] == 0 && (board[i+5] == -1 || board[i+5] == -2)) { //capture
+					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+10) + ":" + getCol(i+10) + ")";
+					temp += addKingJumps(i+10, true);
+					temp += "\n";
+					possibleMoves.add(temp);
+				}
+				if (inBounds(i+8) && board[i+8] == 0 && (board[i+4] == -1 || board[i+4] == -2)) { //capture
+					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+8) + ":" + getCol(i+8) + ")";
+					temp += addKingJumps(i+8, true);
+					temp += "\n";
+					possibleMoves.add(temp);
+				}
+				if (inBounds(i-10) && board[i-10] == 0 && (board[i-5] == -1 || board[i-5] == -2)) { //capture
+					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i-10) + ":" + getCol(i-10) + ")";
+					temp += addKingJumps(i-10, true);
+					temp += "\n";
+					possibleMoves.add(temp);					
+				}
+				if (inBounds(i-8) && board[i-8] == 0 && (board[i-4] == -1 || board[i-4] == -2)) { //capture
+					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i-8) + ":" + getCol(i-8) + ")";
+					temp += addKingJumps(i-8, true);
 					temp += "\n";
 					possibleMoves.add(temp);
 				}
 			}
 		}
 		
-		System.out.println("Possible Moves:");
+		/*System.out.println("Possible Moves:");
 		for (int i = 0; i < possibleMoves.size(); i++) {
 			System.out.print(possibleMoves.get(i));
-		}
+		}*/
 		
 		if (canCapture(possibleMoves)) {
 			LinkedList<String> newMoves = new LinkedList<String>();
@@ -159,13 +267,19 @@ public class CheckersState {
 		return possibleMoves;
 	}
 	
-	public CheckersState result(String move, boolean isComputer) {
+	public CheckersState result(String move) {
+		
+		//System.out.print(move);
+		CheckersState newCheckers = new CheckersState(myColorIsBlack);
+		
+		for (int i = 0; i < board.length; i++) {
+			newCheckers.board[i] = board[i];
+		}
 		
 		String[] splitmessage = move.split("[:()]");
 				
 		int fromRow, toRow, fromCol, toCol, indexFrom, indexTo;
 		int i = 1;
-		if (isComputer) i += 2;
 		while (i <= splitmessage.length-5) {
 			
 			fromRow = Integer.valueOf(splitmessage[i]);
@@ -176,34 +290,71 @@ public class CheckersState {
 			indexFrom = getBoardIndex(fromRow, fromCol);
 			indexTo = getBoardIndex(toRow, toCol);
 			
-			int pieceValue = board[indexFrom];
-			board[indexFrom] = 0;
-			board[indexTo] = pieceValue;
+			int pieceValue = newCheckers.board[indexFrom];
+			newCheckers.board[indexFrom] = 0;
+			newCheckers.board[indexTo] = pieceValue;
 			
-			if (getRow(indexTo) == 0 && board[indexTo] == 1) {
-				board[indexTo] = 2;
+			if (getRow(indexTo) == 0 && newCheckers.board[indexTo] == 1) {
+				newCheckers.board[indexTo] = 2;
 			}
-			else if (getRow(indexTo) == 7 && board[indexTo] == -1) {
-				board[indexTo] = -2;
+			else if (getRow(indexTo) == 7 && newCheckers.board[indexTo] == -1) {
+				newCheckers.board[indexTo] = -2;
 			}
 			
 			int diff = indexFrom - indexTo;
 			if (diff == 10) { //delete captured pieces
-				board[indexFrom-5] = 0;
+				newCheckers.board[indexFrom-5] = 0;
 			}
 			else if (diff == 8){
-				board[indexFrom-4] = 0;
+				newCheckers.board[indexFrom-4] = 0;
 			}
 			else if (diff == -10) {
-				board[indexFrom+5] = 0;
+				newCheckers.board[indexFrom+5] = 0;
 			}
 			else if (diff == -8) {
-				board[indexFrom+4] = 0;
+				newCheckers.board[indexFrom+4] = 0;
 			}
 			
 			i += 4;
 		}
-		return this;
+		return newCheckers;
+	}
+	
+	public boolean isTerminal () {
+		
+		boolean terminal = false;
+		int countBlack = 0;
+		int countWhite = 0;
+		for (int i = 0; i < board.length; i++) {
+			if (board[i] == 1 || board[i] == 2) {
+				countBlack++;
+			}
+			else if (board[i] == -1 || board[i] == -2) {
+				countWhite++;
+			}
+		}
+		
+		if (countBlack == 0 || countWhite == 0) {
+			terminal = true;
+		}
+		
+		return terminal;
+	}
+	
+	public double utility(String player) {
+		
+		int countBlack = 0;
+		int countWhite = 0;
+		for (int i = 0; i < board.length; i++) {
+			if (board[i] == 1 || board[i] == 2) {
+				countBlack++;
+			}
+			else if (board[i] == -1 || board[i] == -2) {
+				countWhite++;
+			}
+		}
+		
+		return countBlack - countWhite; 
 	}
 	
 	public int getBoardIndex(int row, int col) {

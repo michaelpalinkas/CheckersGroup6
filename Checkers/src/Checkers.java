@@ -6,7 +6,8 @@ import java.util.*;
 public class Checkers {
 
 	private static Socket mySocket;
-	private static CheckersState myState;
+	private static GameState myState;
+	private static MinimaxSearch mms;
 	
 	public static void main(String[] args) {
 		
@@ -53,31 +54,39 @@ public class Checkers {
 			message = br.readLine();
 			System.out.println(message);
 			
+			boolean maximizing;
 			String[] splitMessage = message.split(":");
 			if (splitMessage[1].equals("White")){
+				maximizing = false;
 				myState = new CheckersState(false);
 				message = br.readLine();
 				System.out.println(message);
-				myState.result(message, true);
-				myState.printBoard();
+				myState = myState.result(message.substring(11));
+				((CheckersState)myState).printBoard();
 			}
 			else {
+				maximizing = true;
 				myState = new CheckersState(true);
 			}
 			
-			
+			mms = new MinimaxSearch();
 			boolean inGame = true;
 			String move;
 			while (inGame) {
 				message = br.readLine();
 				System.out.println(message);	//?Move(time)
 				if (message.contains("Result") || message.contains("Error")) break;
-				move = myState.actions().get(0);
+				List<String> potentialMoves = myState.actions();
+				System.out.println("Possible Moves:");
+				for (int i = 0; i < potentialMoves.size(); i++) {
+					System.out.print(potentialMoves.get(i));
+				}
+				move = mms.minimaxDecision(myState, maximizing);
 				System.out.print("\nMove chosen:\n" + move);
 				bw.write(move);
 				bw.flush();
-				myState.result(move, false);
-				myState.printBoard();
+				myState = myState.result(move);
+				((CheckersState)myState).printBoard();
 				
 				message = br.readLine();	//Move:ourmove
 				System.out.println(message);
@@ -85,8 +94,8 @@ public class Checkers {
 				System.out.println(message);
 
 				if (message.contains("Result") || message.contains("Error")) break;
-				myState.result(message, true);
-				myState.printBoard();
+				myState = myState.result(message.substring(11));
+				((CheckersState)myState).printBoard();
 			}
 			
 			mySocket.close();
