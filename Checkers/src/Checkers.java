@@ -8,6 +8,8 @@ public class Checkers {
 	private static Socket mySocket;
 	private static GameState myState;
 	private static MinimaxSearch mms;
+	private static AlphaBetaSearch abs;
+	private static final int MAXDEPTH = 8;
 	
 	public static void main(String[] args) {
 		
@@ -55,6 +57,7 @@ public class Checkers {
 			System.out.println(message);
 			
 			boolean maximizing;
+			int ply = 0;
 			String[] splitMessage = message.split(":");
 			if (splitMessage[1].equals("White")){
 				maximizing = false;
@@ -63,6 +66,7 @@ public class Checkers {
 				System.out.println(message);
 				myState = myState.result(message.substring(11));
 				((CheckersState)myState).printBoard();
+				ply++;
 			}
 			else {
 				maximizing = true;
@@ -70,23 +74,53 @@ public class Checkers {
 			}
 			
 			mms = new MinimaxSearch();
+			abs = new AlphaBetaSearch();
 			boolean inGame = true;
+			boolean valid = false;
+			int time;
+			int depth = MAXDEPTH;
 			String move;
 			while (inGame) {
 				message = br.readLine();
 				System.out.println(message);	//?Move(time)
 				if (message.contains("Result") || message.contains("Error")) break;
+				splitMessage = message.split("[()]");
+				time = Integer.parseInt(splitMessage[1]);
+				/*if (time < 20) {
+					depth = 6;
+				}
+				else if (ply < 10) {
+					depth = 6;
+				}
+				else {
+					depth = MAXDEPTH;
+				}*/
+				depth = MAXDEPTH;
+				System.out.println();
+				abs.decision(myState, depth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, maximizing, true);
+				System.out.println();
 				List<String> potentialMoves = myState.actions();
 				System.out.println("Possible Moves:");
+				valid = false;
 				for (int i = 0; i < potentialMoves.size(); i++) {
 					System.out.print(potentialMoves.get(i));
+					if (potentialMoves.get(i).equals(abs.getBestAction())) {
+						valid = true;
+					}
 				}
 				System.out.println();
-				move = mms.minimaxDecision(myState, maximizing);
+				//move = mms.minimaxDecision(myState, maximizing);
+				if (valid) {
+					move = abs.getBestAction();
+				}
+				else {
+					move = potentialMoves.get(0);
+				}
 				System.out.print("\nMove chosen:\n" + move);
 				bw.write(move);
 				bw.flush();
 				myState = myState.result(move);
+				ply++;
 				((CheckersState)myState).printBoard();
 				
 				message = br.readLine();	//Move:ourmove
@@ -96,6 +130,7 @@ public class Checkers {
 
 				if (message.contains("Result") || message.contains("Error")) break;
 				myState = myState.result(message.substring(11));
+				ply++;
 				((CheckersState)myState).printBoard();
 			}
 			

@@ -5,6 +5,16 @@ public class CheckersState implements GameState {
 	int[] board = new int[36];
 	boolean myColorIsBlack;
 	final int INVALID = 100;
+	int[] weights = new int[36];
+
+	/*		
+	 * 		0	=>	unoccupied 
+	 * 		-1	=>	white piece
+	 * 		-2	=>	white king
+	 * 		1	=>	black piece
+	 * 		2	=>	black king
+	 */
+	
 	
 	public CheckersState(boolean color) {
 		
@@ -27,6 +37,11 @@ public class CheckersState implements GameState {
 				board[i] = 0;
 			}
 		}
+		
+		weights = new int[]	{0, 4, 4, 4, 4, 4, 3, 3, 3,
+							0, 3, 2, 2, 4, 4, 2, 1, 3,
+							0, 3, 1, 2, 4, 4, 2, 2, 3,
+							0, 3, 3, 3, 4, 4, 4, 4, 4};
 	}
 
 	public String player() {
@@ -342,30 +357,20 @@ public class CheckersState implements GameState {
 	
 	public double utility(String player) {
 		
-		double blackPieces = 0;
-		double whitePieces = 0;
-		double blackKings = 0;
-		double whiteKings = 0;
-		for (int i = 0; i < board.length; i++) {
-			if (board[i] == 1) {
-				blackPieces++;
-			}
-			else if (board[i] == 2) {
-				blackKings++;
-			}
-			else if (board[i] == -1) {
-				whitePieces++;
-			}
-			else if (board[i] == -2) {
-				whiteKings++;
-			}
-		}
-		
-		double whiteValue = (whitePieces*2)+(whiteKings*3);
-		double blackValue = (blackPieces*2)+(blackKings*3);
-		double utility = blackValue - whiteValue;
-		
-		return utility;
+		 double count = 0.0;
+	        for(int i = 0; i < board.length; i++)
+	        {
+	            if(board[i] == 1)
+	                count += 3.0 * weights[i];
+	            if(board[i] == 2)
+	                count += 5.0 * weights[i];
+	            if(board[i] == -1)
+	                count -= 3.0 * weights[i];
+	            if(board[i] == -2)
+	                count -= 5.0 * weights[i];
+	        }
+	        
+        return count;
 	}
 	
 	public int getBoardIndex(int row, int col) {
