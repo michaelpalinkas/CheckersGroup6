@@ -19,7 +19,7 @@ public class AlphaBetaSearch {
 		}
 		
 		if (minOrMax) {		//maximizing, Black to play
-			double best = -100000;
+			double best = -100;
 			
 			for (int i = state.actions().size()-1; i >= 0; i--) {
 				String s = state.actions().get(i);
@@ -29,6 +29,8 @@ public class AlphaBetaSearch {
 					best = alpha;
 					if (initial) {
 						bestAction = s;
+						System.out.print(bestAction);
+						System.out.println("value: "+ best);
 					}
 				}
 				
@@ -40,7 +42,7 @@ public class AlphaBetaSearch {
 			return alpha;
 		}
 		else {		//minimizing, white to play
-			double best = 100000;
+			double best = 100;
 			
 			for (String s : state.actions()) {
 				beta = Math.min(beta, decision(state.result(s), depth-1, alpha, beta, true, false));
@@ -49,6 +51,8 @@ public class AlphaBetaSearch {
 					best = beta;
 					if (initial) {
 						bestAction = s;
+						System.out.print(bestAction);
+						System.out.println("value: "+ best);
 					}
 				}
 				

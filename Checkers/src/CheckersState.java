@@ -58,7 +58,7 @@ public class CheckersState implements GameState {
 			toReturn += ":(" + getRow(index-10) + ":" + getCol(index-10) + ")";
 			toReturn += addJumps(index-10, isBlack);
 		}
-		else if (index-8 >= 0 && !isBlack && board[index-8] == 0 && (board[index-4] == 1 || board[index-5] == 2)) {
+		else if (index-8 >= 0 && !isBlack && board[index-8] == 0 && (board[index-4] == 1 || board[index-4] == 2)) {
 			toReturn += ":(" + getRow(index-8) + ":" + getCol(index-8) + ")";
 			toReturn += addJumps(index-8, isBlack);
 		}
@@ -66,7 +66,7 @@ public class CheckersState implements GameState {
 			toReturn += ":(" + getRow(index+10) + ":" + getCol(index+10) + ")";
 			toReturn += addJumps(index+10, isBlack);
 		}
-		else if (index+8 < board.length && isBlack && board[index+8] == 0 && (board[index+4] == -1 || board[index+5] == -2)) {
+		else if (index+8 < board.length && isBlack && board[index+8] == 0 && (board[index+4] == -1 || board[index+4] == -2)) {
 			toReturn += ":(" + getRow(index+8) + ":" + getCol(index+8) + ")";
 			toReturn += addJumps(index+8, isBlack);
 		}
@@ -154,7 +154,7 @@ public class CheckersState implements GameState {
 					temp += "\n";
 					possibleMoves.add(temp);					
 				}
-				if (inBounds(i-8) && board[i-8] == 0 && (board[i-4] == 1 || board[i-8] == 2)) { //capture
+				if (inBounds(i-8) && board[i-8] == 0 && (board[i-4] == 1 || board[i-4] == 2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i-8) + ":" + getCol(i-8) + ")";
 					temp += addJumps(i-8, false);
 					temp += "\n";
@@ -175,7 +175,7 @@ public class CheckersState implements GameState {
 					temp += "\n";
 					possibleMoves.add(temp);
 				}
-				if (inBounds(i+8) && board[i+8] == 0 && (board[i+4] == -1 || board[i+8] == -2)) { //capture
+				if (inBounds(i+8) && board[i+8] == 0 && (board[i+4] == -1 || board[i+4] == -2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+8) + ":" + getCol(i+8) + ")";
 					temp += addJumps(i+8, true);
 					temp += "\n";
@@ -357,20 +357,31 @@ public class CheckersState implements GameState {
 	
 	public double utility(String player) {
 		
-		 double count = 0.0;
-	        for(int i = 0; i < board.length; i++)
-	        {
-	            if(board[i] == 1)
-	                count += 3.0 * weights[i];
-	            if(board[i] == 2)
-	                count += 5.0 * weights[i];
-	            if(board[i] == -1)
-	                count -= 3.0 * weights[i];
-	            if(board[i] == -2)
-	                count -= 5.0 * weights[i];
-	        }
-	        
-        return count;
+		double bcount = 0.0;
+        double wcount = 0.0;
+
+        for(int i = 0; i < board.length; i++)
+        {
+            if(board[i] == -1)
+                wcount += 7.5 * weights[i];
+            if(board[i] == -2)
+                wcount += 12.0 * weights[i];
+
+            if(board[i] == 1)
+                bcount += 7.5 * weights[i];
+            if(board[i] == 2)
+                bcount += 12.0 * weights[i];
+        }
+        //prioritize for kill states
+        if(bcount == 0)
+            wcount += 1000;
+        if(wcount == 0)
+            bcount += 1000;
+            
+        if (player.equals("Black"))	
+        	return bcount - wcount;
+        else
+        	return wcount - bcount;
 	}
 	
 	public int getBoardIndex(int row, int col) {

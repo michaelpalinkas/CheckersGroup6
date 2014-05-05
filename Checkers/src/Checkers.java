@@ -9,7 +9,7 @@ public class Checkers {
 	private static GameState myState;
 	private static MinimaxSearch mms;
 	private static AlphaBetaSearch abs;
-	private static final int MAXDEPTH = 8;
+	private static final int MAXDEPTH = 10;
 	
 	public static void main(String[] args) {
 		
@@ -86,16 +86,15 @@ public class Checkers {
 				if (message.contains("Result") || message.contains("Error")) break;
 				splitMessage = message.split("[()]");
 				time = Integer.parseInt(splitMessage[1]);
-				/*if (time < 20) {
+				if (time < 10) {
 					depth = 6;
 				}
-				else if (ply < 10) {
-					depth = 6;
+				else if (time < 30) {
+					depth = 8;
 				}
 				else {
 					depth = MAXDEPTH;
-				}*/
-				depth = MAXDEPTH;
+				}
 				System.out.println();
 				abs.decision(myState, depth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, maximizing, true);
 				System.out.println();
@@ -115,6 +114,7 @@ public class Checkers {
 				}
 				else {
 					move = potentialMoves.get(0);
+					System.out.println("search had invalid move");
 				}
 				System.out.print("\nMove chosen:\n" + move);
 				bw.write(move);

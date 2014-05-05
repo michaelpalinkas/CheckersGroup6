@@ -42,7 +42,8 @@ public class AlphaBetaSearch {
 		else {		//minimizing, white to play
 			double best = 100000;
 			
-			for (String s : state.actions()) {
+			for (int i = state.actions().size()-1; i >= 0; i--) {
+				String s = state.actions().get(i);
 				beta = Math.min(beta, decision(state.result(s), depth-1, alpha, beta, true, false));
 				
 				if (beta < best) {

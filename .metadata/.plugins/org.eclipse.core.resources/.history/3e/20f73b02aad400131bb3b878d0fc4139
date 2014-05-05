@@ -27,6 +27,8 @@ public class AlphaBetaSearch {
 				
 				if (alpha > best) {
 					best = alpha;
+					System.out.print(bestAction);
+					System.out.println("value: "+ best);
 					if (initial) {
 						bestAction = s;
 					}
@@ -47,6 +49,8 @@ public class AlphaBetaSearch {
 				
 				if (beta < best) {
 					best = beta;
+					System.out.print(bestAction);
+					System.out.println("value: "+ best);
 					if (initial) {
 						bestAction = s;
 					}

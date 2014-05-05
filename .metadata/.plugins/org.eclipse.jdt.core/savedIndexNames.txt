@@ -12,5 +12,4 @@ INDEX VERSION 1.126+C:\Users\Mike\Documents\School Stuff\AI\CheckersGroup6\Check
 3133528496.index
 1498219845.index
 1115467115.index
-2645667855.index
 1697886153.index
