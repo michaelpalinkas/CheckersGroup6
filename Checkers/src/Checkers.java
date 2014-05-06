@@ -9,7 +9,7 @@ public class Checkers {
 	private static GameState myState;
 	private static MinimaxSearch mms;
 	private static AlphaBetaSearch abs;
-	private static final int MAXDEPTH = 10;
+	private static final int MAXDEPTH = 12;
 	
 	public static void main(String[] args) {
 		
@@ -72,7 +72,7 @@ public class Checkers {
 				maximizing = true;
 				myState = new CheckersState(true);
 			}
-			
+			Random generator = new Random();
 			mms = new MinimaxSearch();
 			abs = new AlphaBetaSearch();
 			boolean inGame = true;
@@ -86,23 +86,32 @@ public class Checkers {
 				if (message.contains("Result") || message.contains("Error")) break;
 				splitMessage = message.split("[()]");
 				time = Integer.parseInt(splitMessage[1]);
-				if (time < 10) {
+				if (time < 8) {
 					depth = 6;
 				}
-				else if (time < 30) {
-					depth = 8;
+				else if (time < 22) {
+						depth = MAXDEPTH-4;
+				}
+				else if (time < 42) {
+					depth = MAXDEPTH-3;
+				}
+				else if (time < 60) {
+					depth = MAXDEPTH-2;
+				}
+				else if (time < 80) {
+					depth = MAXDEPTH-1;
 				}
 				else {
 					depth = MAXDEPTH;
 				}
-				System.out.println();
+				//System.out.println();
 				abs.decision(myState, depth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, maximizing, true);
-				System.out.println();
+				//System.out.println();
 				List<String> potentialMoves = myState.actions();
-				System.out.println("Possible Moves:");
+				//System.out.println("Possible Moves:");
 				valid = false;
 				for (int i = 0; i < potentialMoves.size(); i++) {
-					System.out.print(potentialMoves.get(i));
+					//System.out.print(potentialMoves.get(i));
 					if (potentialMoves.get(i).equals(abs.getBestAction())) {
 						valid = true;
 					}
