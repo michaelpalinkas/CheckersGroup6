@@ -61,7 +61,7 @@ public class Checkers {
 			String[] splitMessage = message.split(":");
 			if (splitMessage[1].equals("White")){
 				maximizing = false;
-				myState = new CheckersState(false);
+				myState = new CheckersState(true);
 				message = br.readLine();
 				System.out.println(message);
 				myState = myState.result(message.substring(11));

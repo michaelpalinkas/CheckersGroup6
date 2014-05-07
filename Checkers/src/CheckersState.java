@@ -78,60 +78,106 @@ public class CheckersState implements GameState {
 		return toReturn;
 	}
 	
-	public String addKingJumps(int index, boolean isBlack, int capIndex) {
+	public String addKingJumps(int index, boolean isBlack, ArrayList<Integer> capped) {
 		
 		String toReturn = "";
 		if (isBlack) { //black
 			if (index-10 >= 0 && board[index-10] == 0 && (board[index-5] == -1 || board[index-5] == -2)) {
-				if (index-5 != capIndex) {
+				boolean good = true;
+				for (int i = 0; i < capped.size(); i++) {
+					if (index-5 == capped.get(i))
+						good = false;
+				}
+				if (good) {
 					toReturn += ":(" + getRow(index-10) + ":" + getCol(index-10) + ")";
-					toReturn += addKingJumps(index-10, isBlack, index-5);
+					capped.add(index-5);
+					toReturn += addKingJumps(index-10, isBlack, capped);
 				}
 			}
 			if (index-8 >= 0 && board[index-8] == 0 && (board[index-4] == -1 || board[index-4] == -2)) {
-				if (index-4 != capIndex) {
+				boolean good = true;
+				for (int i = 0; i < capped.size(); i++) {
+					if (index-4 == capped.get(i))
+						good = false;
+				}
+				if (good) {
 					toReturn += ":(" + getRow(index-8) + ":" + getCol(index-8) + ")";
-					toReturn += addKingJumps(index-8, isBlack, index-4);
+					capped.add(index-4);
+					toReturn += addKingJumps(index-8, isBlack, capped);
 				}
 			}
 			if(index+10 < board.length && board[index+10] == 0 && (board[index+5] == -1 || board[index+5] == -2)) {
-				if (index+5 != capIndex) {
+				boolean good = true;
+				for (int i = 0; i < capped.size(); i++) {
+					if (index+5 == capped.get(i))
+						good = false;
+				}
+				if (good) {
 					toReturn += ":(" + getRow(index+10) + ":" + getCol(index+10) + ")";
-					toReturn += addKingJumps(index+10, isBlack, index+5);
+					capped.add(index+5);
+					toReturn += addKingJumps(index+10, isBlack, capped);
 				}
 			}
 			if (index+8 < board.length && board[index+8] == 0 && (board[index+4] == -1 || board[index+4] == -2)) {
-				if (index+4 != capIndex) {
+				boolean good = true;
+				for (int i = 0; i < capped.size(); i++) {
+					if (index+4 == capped.get(i))
+						good = false;
+				}
+				if (good) {
 					toReturn += ":(" + getRow(index+8) + ":" + getCol(index+8) + ")";
-					toReturn += addKingJumps(index+8, isBlack, index+4);
+					capped.add(index+4);
+					toReturn += addKingJumps(index+8, isBlack, capped);
 				}
 			}
 		}
 		else { //white
 			if (index-10 >= 0 && board[index-10] == 0 && (board[index-5] == 1 || board[index-5] == 2)) {
-				if (index-5 != capIndex) {
+				boolean good = true;
+				for (int i = 0; i < capped.size(); i++) {
+					if (index-5 == capped.get(i))
+						good = false;
+				}
+				if (good) {
 					toReturn += ":(" + getRow(index-10) + ":" + getCol(index-10) + ")";
-					System.out.println(toReturn);
-					toReturn += addKingJumps(index-10, isBlack, index-5);
+					capped.add(index-5);
+					toReturn += addKingJumps(index-10, isBlack, capped);
 				}
 			}
 			if (index-8 >= 0 && board[index-8] == 0 && (board[index-4] == 1 || board[index-4] == 2)) {
-				if (index-4 != capIndex) {
+				boolean good = true;
+				for (int i = 0; i < capped.size(); i++) {
+					if (index-4 == capped.get(i))
+						good = false;
+				}
+				if (good) {
 					toReturn += ":(" + getRow(index-8) + ":" + getCol(index-8) + ")";
-					toReturn += addKingJumps(index-8, isBlack, index-4);
+					capped.add(index-4);
+					toReturn += addKingJumps(index-8, isBlack, capped);
 				}
 			}
 			if(index+10 < board.length && board[index+10] == 0 && (board[index+5] == 1 || board[index+5] == 2)) {
-				if (index+5 != capIndex) {
+				boolean good = true;
+				for (int i = 0; i < capped.size(); i++) {
+					if (index+5 == capped.get(i))
+						good = false;
+				}
+				if (good) {
 					toReturn += ":(" + getRow(index+10) + ":" + getCol(index+10) + ")";
-					System.out.println(toReturn);
-					toReturn += addKingJumps(index+10, isBlack, index+5);
+					capped.add(index+5);
+					toReturn += addKingJumps(index+10, isBlack, capped);
 				}
 			}
 			if (index+8 < board.length && board[index+8] == 0 && (board[index+4] == 1 || board[index+4] == 2)) {
-				if (index+4 != capIndex) {
+				boolean good = true;
+				for (int i = 0; i < capped.size(); i++) {
+					if (index+4 == capped.get(i))
+						good = false;
+				}
+				if (good) {
 					toReturn += ":(" + getRow(index+8) + ":" + getCol(index+8) + ")";
-					toReturn += addKingJumps(index+8, isBlack, index+4);
+					capped.add(index+4);
+					toReturn += addKingJumps(index+8, isBlack, capped);
 				}
 			}
 		}
@@ -189,6 +235,8 @@ public class CheckersState implements GameState {
 			}
 			else if (board[i] == -2 && !myColorIsBlack) { //white king
 				
+				ArrayList<Integer> capped;
+				
 				if (inBounds(i+4) && board[i+4] == 0) {
 					possibleMoves.add("(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+4) + ":" + getCol(i+4) + ")\n");
 				}
@@ -203,30 +251,40 @@ public class CheckersState implements GameState {
 				}
 				if (inBounds(i+10) && board[i+10] == 0 && (board[i+5] == 1 || board[i+5] == 2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+10) + ":" + getCol(i+10) + ")";
-					temp += addKingJumps(i+10, false, i+5);
+					capped = new ArrayList<Integer>();
+					capped.add(i+5);
+					temp += addKingJumps(i+10, false, capped);
 					temp += "\n";
 					possibleMoves.add(temp);
 				}
 				if (inBounds(i+8) && board[i+8] == 0 && (board[i+4] == 1 || board[i+4] == 2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+8) + ":" + getCol(i+8) + ")";
-					temp += addKingJumps(i+8, false, i+4);
+					capped = new ArrayList<Integer>();
+					capped.add(i+4);
+					temp += addKingJumps(i+8, false, capped);
 					temp += "\n";
 					possibleMoves.add(temp);
 				}
 				if (inBounds(i-10) && board[i-10] == 0 && (board[i-5] == 1 || board[i-5] == 2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i-10) + ":" + getCol(i-10) + ")";
-					temp += addKingJumps(i-10, false, i-5);
+					capped = new ArrayList<Integer>();
+					capped.add(i-5);
+					temp += addKingJumps(i-10, false, capped);
 					temp += "\n";
 					possibleMoves.add(temp);					
 				}
 				if (inBounds(i-8) && board[i-8] == 0 && (board[i-4] == 1 || board[i-4] == 2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i-8) + ":" + getCol(i-8) + ")";
-					temp += addKingJumps(i-8, false, i-4);
+					capped = new ArrayList<Integer>();
+					capped.add(i-4);
+					temp += addKingJumps(i-8, false, capped);
 					temp += "\n";
 					possibleMoves.add(temp);
 				}
 			}
 			else if (board[i] == 2 && myColorIsBlack) { //black king
+				
+				ArrayList<Integer> capped;
 				
 				if (inBounds(i+4) && board[i+4] == 0) {
 					possibleMoves.add("(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+4) + ":" + getCol(i+4) + ")\n");
@@ -242,25 +300,33 @@ public class CheckersState implements GameState {
 				}
 				if (inBounds(i+10) && board[i+10] == 0 && (board[i+5] == -1 || board[i+5] == -2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+10) + ":" + getCol(i+10) + ")";
-					temp += addKingJumps(i+10, true, i+5);
+					capped = new ArrayList<Integer>();
+					capped.add(i+5);
+					temp += addKingJumps(i+10, true, capped);
 					temp += "\n";
 					possibleMoves.add(temp);
 				}
 				if (inBounds(i+8) && board[i+8] == 0 && (board[i+4] == -1 || board[i+4] == -2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i+8) + ":" + getCol(i+8) + ")";
-					temp += addKingJumps(i+8, true, i+4);
+					capped = new ArrayList<Integer>();
+					capped.add(i+4);
+					temp += addKingJumps(i+8, true, capped);
 					temp += "\n";
 					possibleMoves.add(temp);
 				}
 				if (inBounds(i-10) && board[i-10] == 0 && (board[i-5] == -1 || board[i-5] == -2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i-10) + ":" + getCol(i-10) + ")";
-					temp += addKingJumps(i-10, true, i-5);
+					capped = new ArrayList<Integer>();
+					capped.add(i-5);
+					temp += addKingJumps(i-10, true, capped);
 					temp += "\n";
 					possibleMoves.add(temp);					
 				}
 				if (inBounds(i-8) && board[i-8] == 0 && (board[i-4] == -1 || board[i-4] == -2)) { //capture
 					String temp = "cap " + "(" + getRow(i) + ":" + getCol(i) + "):(" + getRow(i-8) + ":" + getCol(i-8) + ")";
-					temp += addKingJumps(i-8, true, i-4);
+					capped = new ArrayList<Integer>();
+					capped.add(i-4);
+					temp += addKingJumps(i-8, true, capped);
 					temp += "\n";
 					possibleMoves.add(temp);
 				}
@@ -287,9 +353,8 @@ public class CheckersState implements GameState {
 	}
 	
 	public CheckersState result(String move) {
-		
 		//System.out.print(move);
-		CheckersState newCheckers = new CheckersState(myColorIsBlack);
+		CheckersState newCheckers = new CheckersState(!myColorIsBlack);
 		
 		for (int i = 0; i < board.length; i++) {
 			newCheckers.board[i] = board[i];
