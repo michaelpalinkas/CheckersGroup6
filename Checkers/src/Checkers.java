@@ -101,9 +101,35 @@ public class Checkers {
 				else if (time < 80) {
 					depth = MAXDEPTH-1;
 				}
+				else if(time < 150 && time > 120){
+					depth = MAXDEPTH+1;
+				}
+				else if(time < 120){
+					depth = MAXDEPTH;
+				}
 				else {
 					depth = MAXDEPTH;
 				}
+				
+			/*	if (time < 8) {
+					depth = 6;
+				}
+				else if (time < 22) {
+						depth = MAXDEPTH-4;
+				}
+				else if (time < 42) {
+					depth = MAXDEPTH-3;
+				}
+				else if (time < 60) {
+					depth = MAXDEPTH-2;
+				}
+				else if (time < 80) {
+					depth = MAXDEPTH-1;
+				}
+				else {
+					depth = MAXDEPTH;
+				}
+				*/
 				//System.out.println();
 				abs.decision(myState, depth, Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, maximizing, true);
 				//System.out.println();

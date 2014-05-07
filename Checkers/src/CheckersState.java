@@ -458,12 +458,10 @@ public class CheckersState implements GameState {
             }
         }
         
-        if (totalPieces <= 10) {
+        if (totalPieces <= 8) {
         	posValue = posValue * 0.5;
         }
-        else if (totalPieces <= 6) {
-        	posValue = posValue * 0.5;
-        }
+      
         
         double pieceAdvantage = blackPieces - whitePieces;
         double kingAdvantage = blackKings - whiteKings;
